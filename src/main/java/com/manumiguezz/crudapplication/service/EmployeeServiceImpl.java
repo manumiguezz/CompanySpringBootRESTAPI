@@ -1,22 +1,21 @@
 package com.manumiguezz.crudapplication.service;
 
-import com.manumiguezz.crudapplication.dao.EmployeeDAO;
+
 import com.manumiguezz.crudapplication.dao.EmployeeRepository;
 import com.manumiguezz.crudapplication.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeServiceImpl (EmployeeRepository theEmployeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository) {
         employeeRepository = theEmployeeRepository;
     }
 
@@ -29,13 +28,13 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee findById(int theId) {
         Optional<Employee> result = employeeRepository.findById(theId);
 
-        Employee theEmployee;
+        Employee theEmployee = null;
 
         if (result.isPresent()) {
             theEmployee = result.get();
         }
         else {
-            throw new RuntimeException("Did not find employee id: " + theId);
+            throw new RuntimeException("Did not find employee id - " + theId);
         }
 
         return theEmployee;
@@ -47,7 +46,13 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public void deleteByID(int theId) {
+    public void deleteById(int theId) {
         employeeRepository.deleteById(theId);
     }
 }
+
+
+
+
+
+

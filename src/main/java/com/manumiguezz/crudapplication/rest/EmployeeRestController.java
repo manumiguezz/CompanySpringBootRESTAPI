@@ -1,9 +1,8 @@
 package com.manumiguezz.crudapplication.rest;
 
-import com.manumiguezz.crudapplication.dao.EmployeeDAO;
 import com.manumiguezz.crudapplication.entity.Employee;
 import com.manumiguezz.crudapplication.service.EmployeeService;
-import com.manumiguezz.crudapplication.service.EmployeeServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,17 +13,20 @@ public class EmployeeRestController {
 
     private EmployeeService employeeService;
 
-    public EmployeeRestController (EmployeeService theEmployeeService) {
+    @Autowired
+    public EmployeeRestController(EmployeeService theEmployeeService) {
         employeeService = theEmployeeService;
     }
 
     @GetMapping("/employees")
-    public List<Employee> findAll(){
+    public List<Employee> findAll() {
         return employeeService.findAll();
     }
 
+
     @GetMapping("/employees/{employeeId}")
     public Employee getEmployee(@PathVariable int employeeId) {
+
         Employee theEmployee = employeeService.findById(employeeId);
 
         if (theEmployee == null) {
@@ -34,35 +36,52 @@ public class EmployeeRestController {
         return theEmployee;
     }
 
-    @PostMapping ("/employees")
+
+    @PostMapping("/employees")
     public Employee addEmployee(@RequestBody Employee theEmployee) {
+
 
         theEmployee.setId(0);
 
         Employee dbEmployee = employeeService.save(theEmployee);
+
         return dbEmployee;
     }
 
     @PutMapping("/employees")
     public Employee updateEmployee(@RequestBody Employee theEmployee) {
+
         Employee dbEmployee = employeeService.save(theEmployee);
+
         return dbEmployee;
     }
 
-    @DeleteMapping("/employees/{employeeId} ")
+    @DeleteMapping("/employees/{employeeId}")
     public String deleteEmployee(@PathVariable int employeeId) {
+
         Employee tempEmployee = employeeService.findById(employeeId);
 
         if (tempEmployee == null) {
-            throw new RuntimeException("Employee id: " + employeeId + " not found");
+            throw new RuntimeException("Employee id not found - " + employeeId);
         }
 
-        employeeService.deleteByID(employeeId);
+        employeeService.deleteById(employeeId);
 
-        return "Employee with id: " + employeeId + " was deleted";
+        return "Deleted employee id - " + employeeId;
     }
 
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
